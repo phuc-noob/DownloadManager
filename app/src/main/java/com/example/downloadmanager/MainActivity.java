@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     private NotificationManagerCompat notificationManagerCompat;
@@ -44,41 +47,34 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                sendOnChannel1(  );
+                clickStartSevice();
+                sendOnChannel1();
             }
         });
 
-        //
-        //this.notificationManagerCompat = NotificationManagerCompat.from(this);
+
+    }
+
+    private void clickStartSevice() {
+        Intent intent = new Intent(this,service.class);
+        intent.putExtra("key_link_download",editTextLinkDownload.getText().toString().trim());
+        startService(intent);
     }
 
 
-    private void sendOnChannel1()  {
+    private void sendOnChannel1() {
+        editTextLinkDownload =findViewById(R.id.et_link_download);
+        // Get the layouts to use in the custom notification
+        RemoteViews notificationLayoutExpanded  = new RemoteViews(getPackageName(), R.layout.item_download_layout);
+        notificationLayoutExpanded.setTextViewText(R.id.tv_link_download,editTextLinkDownload.getText().toString());
 
-        // Create NotificationManager
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        // NotificationTargetActivity is the activity opened when user click notification.
-//                Intent intent = new Intent(NotificationActivity.this, NotificationTargetActivity.class);
-//                Intent intentArr[] = {intent};
-//                PendingIntent pendingIntent = PendingIntent.getActivities(NotificationActivity.this, 0, intentArr, 0);
-        // Create a new Notification instance.
-        Notification notification = new Notification();
-        // Set small icon.
-        notification.icon = R.drawable.ic__downloading_24;
-        // Set large icon.
-        BitmapDrawable bitmapDrawable = (BitmapDrawable)getDrawable(R.drawable.ic__downloading_24);
-        Bitmap largeIconBitmap = bitmapDrawable.getBitmap();
-        notification.largeIcon = largeIconBitmap;
-        // Set flags.
-        notification.flags = Notification.FLAG_ONGOING_EVENT;
-        // Set send time.
-        notification.when = System.currentTimeMillis();
-        // Create and set notification content view.
-        RemoteViews customRemoteViews = new RemoteViews(getPackageName(), R.layout.item_download_layout);
-        notification.contentView = customRemoteViews;
-        // Set notification intent.
-        //notification.contentIntent = pendingIntent;
-        notificationManager.notify(NOTIFICATION_ID_CUSTOM_VIEW, notification);
+        // Apply the layouts to the notification
+        Notification customNotification = new NotificationCompat.Builder(this, "channel1")
+                .setSmallIcon(R.drawable.ic__downloading_24)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .setCustomContentView(notificationLayoutExpanded)
+                .build();
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+        notificationManagerCompat.notify(1,customNotification);
     }
-
 }
