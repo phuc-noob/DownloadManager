@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <EditText
-        android:text="https://gist.github.com/codinginflow/9d4cf003ffdbebca721dd348c433cb19"
+        android:text="https://www.pixsy.com/wp-content/uploads/2021/04/ben-sweet-2LowviVHZ-E-unsplash-1.jpeg"
         android:id="@+id/et_link_download"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

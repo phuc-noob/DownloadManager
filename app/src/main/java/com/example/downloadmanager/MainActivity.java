@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 clickStartSevice();
-                sendOnChannel1();
+
+                
             }
         });
 
